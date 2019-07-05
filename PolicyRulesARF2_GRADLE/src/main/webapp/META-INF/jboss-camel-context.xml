@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean
+        class="it.agos.ApagArif.consumer.PolicyRulesARF2ServiceProvider" id="policyRulesArf2ServiceBean"/>
+    <camelContext id="policy-rules-arf2-spring-context" xmlns="http://camel.apache.org/schema/spring">
+        <route id="_route1">
+            <from id="_from1" uri="direct:start"/>
+            <log id="_log1" message="Processing Camel route... method: ${body.method.name} ..."/>
+            <to id="_to1" uri="direct:invokeService"/>
+        </route>
+        <route id="invokeService">
+            <from id="_from2" uri="direct:invokeService"/>
+            <log id="_log2" message="invoking web service through the ServiceProvider bean ..."/>
+            <bean id="_bean2" method="invokeService" ref="policyRulesArf2ServiceBean"/>
+            <log id="_log3" message="ServiceProvider invoked ..."/>
+            <log id="_log4" message="Reached end of the Camel route ..."/>
+        </route>
+    </camelContext>
+</beans>
